@@ -53,7 +53,56 @@ class User:
         return cls.count
 
 
+def to_str(b_s) -> str:
+    if isinstance(b_s, bytes):
+        return b_s.decode("utf-8")
+    else:
+        return b_s
 
+
+def to_bytes(b_s) -> bytes:
+    if isinstance(b_s, str):
+        return b_s.encode("utf-8")
+    else:
+        return b_s
+
+
+def parse_url_qs():
+    from urllib.parse import parse_qs
+    url_qs = "red=5&blue=0&green="
+    kv = parse_qs(url_qs, keep_blank_values=True)
+    print(kv)
+    # 获取red参数
+    red = kv.get("red", [''])
+    # [True_value] if [Condition] else [False_value]
+    red = int(red[0]) if red[0] else 0
+    print(red)
+
+
+def check_falsy_scenarios():
+    # 定义所有在 Python 中为 False 的典型对象
+    falsy_values = [
+        None,          # 无类型
+        False,         # 布尔假
+        0,             # 整数零
+        0.0,           # 浮点零
+        "",            # 空字符串
+        [],            # 空列表
+        (),            # 空元组
+        {},            # 空字典
+        set(),         # 空集合
+        range(0)       # 空范围
+    ]
+    for val in falsy_values:
+        # 核心逻辑：if val 为 False，则进入 else
+        if val:
+            result = "True (真)"
+        else:
+            result = "False (假)"
+        print(f"{str(type(val)):<20} | {str(val):<10} | {result}")
+
+
+    
 
 if __name__ == '__main__':
-    get_pep8_style()
+    check_falsy_scenarios()
