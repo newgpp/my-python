@@ -1,3 +1,5 @@
+import json
+from typing import Any
 import sys
 
 
@@ -37,23 +39,77 @@ def get_pep8_style():
     print(style)
 
 
+class UserAccount:
+    # =========================
+    # 类变量（所有用户共享）
+    # =========================
+    total_users = 0
+    MIN_AGE = 18
 
-class User:
-    count = 0  # 类变量
+    def __init__(self, username: str, age: int):
+        # 使用 static method 做“纯校验”
+        if not self.is_valid_age(age):
+            raise ValueError("年龄不合法，必须 >= 18")
 
-    def __init__(self, name):
-        self.name = name
-        User.count += 1
+        self.username = username
+        self.age = age
+        self.is_active = True
 
-    def say_hello(self):
-        print(f"Hello, my name is {self.name}")
+        # 使用 class method 修改“类级别状态”
+        self._increase_user_count()
+
+    # ==================================================
+    # instance method（实例方法）
+    # 👉 关注“某一个对象”的状态和行为
+    # ==================================================
+    def deactivate(self):
+        """禁用当前用户（只影响当前实例）"""
+        self.is_active = False
+        print(f"用户 {self.username} 已被禁用")
+
+    def greet(self):
+        """当前用户的行为"""
+        print(f"Hi, I'm {self.username}, {self.age} years old")
+
+    # ==================================================
+    # class method（类方法）
+    # 👉 关注“整个类”的状态，而不是某一个对象
+    # ==================================================
+    @classmethod
+    def _increase_user_count(cls):
+        """统一管理用户总数"""
+        cls.total_users += 1
 
     @classmethod
-    def get_count(cls):
-        return cls.count
+    def get_total_users(cls) -> int:
+        """获取系统中创建过的用户数量"""
+        return cls.total_users
+
+    # ==================================================
+    # static method（静态方法）
+    # 👉 和类“逻辑相关”，但不依赖类 / 实例状态
+    # ==================================================
+    @staticmethod
+    def is_valid_age(age: int) -> bool:
+        """年龄是否合法（纯函数）"""
+        return isinstance(age, int) and age >= UserAccount.MIN_AGE
+
+    def to_dict(self) -> dict[str, Any]:
+        return {"username": self.username, "age": self.age, "is_active": self.is_active}
 
 
+def test_user_funciton() -> None:
+    u1 = UserAccount("Alice", 20)
+    u2 = UserAccount("Bob", 30)
+
+    u1.greet()
+    u2.deactivate()
+
+    print(f"u1={u1.to_dict()}, u2={u2.to_dict()}")
+
+    print(UserAccount.get_total_users())
+    print(UserAccount.is_valid_age(15))
 
 
-if __name__ == '__main__':
-    get_pep8_style()
+if __name__ == "__main__":
+    test_user_funciton()
