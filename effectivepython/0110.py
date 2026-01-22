@@ -40,9 +40,7 @@ def get_pep8_style():
 
 
 class UserAccount:
-    # =========================
     # 类变量（所有用户共享）
-    # =========================
     total_users = 0
     MIN_AGE = 18
 
@@ -58,10 +56,7 @@ class UserAccount:
         # 使用 class method 修改“类级别状态”
         self._increase_user_count()
 
-    # ==================================================
     # instance method（实例方法）
-    # 👉 关注“某一个对象”的状态和行为
-    # ==================================================
     def deactivate(self):
         """禁用当前用户（只影响当前实例）"""
         self.is_active = False
@@ -71,10 +66,7 @@ class UserAccount:
         """当前用户的行为"""
         print(f"Hi, I'm {self.username}, {self.age} years old")
 
-    # ==================================================
     # class method（类方法）
-    # 👉 关注“整个类”的状态，而不是某一个对象
-    # ==================================================
     @classmethod
     def _increase_user_count(cls):
         """统一管理用户总数"""
@@ -85,10 +77,7 @@ class UserAccount:
         """获取系统中创建过的用户数量"""
         return cls.total_users
 
-    # ==================================================
     # static method（静态方法）
-    # 👉 和类“逻辑相关”，但不依赖类 / 实例状态
-    # ==================================================
     @staticmethod
     def is_valid_age(age: int) -> bool:
         """年龄是否合法（纯函数）"""
@@ -111,5 +100,55 @@ def test_user_funciton() -> None:
     print(UserAccount.is_valid_age(15))
 
 
+def to_str(b_s) -> str:
+    if isinstance(b_s, bytes):
+        return b_s.decode("utf-8")
+    else:
+        return b_s
+
+
+def to_bytes(b_s) -> bytes:
+    if isinstance(b_s, str):
+        return b_s.encode("utf-8")
+    else:
+        return b_s
+
+
+def parse_url_qs():
+    from urllib.parse import parse_qs
+
+    url_qs = "red=5&blue=0&green="
+    kv = parse_qs(url_qs, keep_blank_values=True)
+    print(kv)
+    # 获取red参数
+    red = kv.get("red", [""])
+    # [True_value] if [Condition] else [False_value]
+    red = int(red[0]) if red[0] else 0
+    print(red)
+
+
+def check_falsy_scenarios():
+    # 定义所有在 Python 中为 False 的典型对象
+    falsy_values = [
+        None,  # 无类型
+        False,  # 布尔假
+        0,  # 整数零
+        0.0,  # 浮点零
+        "",  # 空字符串
+        [],  # 空列表
+        (),  # 空元组
+        {},  # 空字典
+        set(),  # 空集合
+        range(0),  # 空范围
+    ]
+    for val in falsy_values:
+        # 核心逻辑：if val 为 False，则进入 else
+        if val:
+            result = "True (真)"
+        else:
+            result = "False (假)"
+        print(f"{str(type(val)):<20} | {str(val):<10} | {result}")
+
+
 if __name__ == "__main__":
-    test_user_funciton()
+    check_falsy_scenarios()
