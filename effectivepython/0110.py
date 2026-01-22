@@ -1,5 +1,6 @@
 import json
 from typing import Any
+from pathlib import Path
 import sys
 
 
@@ -88,6 +89,10 @@ class UserAccount:
 
 
 def test_user_funciton() -> None:
+    """实例方法 (Instance Method) 无需装饰器且首参数为 self（指向实例）"""
+    """类方法 (Class Method) 需 @classmethod 装饰且首参数为 cls（指向类）"""
+    """静态方法 (Static Method) 需 @staticmethod 装饰且不接收特定的首参数。"""
+
     u1 = UserAccount("Alice", 20)
     u2 = UserAccount("Bob", 30)
 
@@ -108,13 +113,20 @@ def to_str(b_s) -> str:
 
 
 def to_bytes(b_s) -> bytes:
+    """bytes 是 Python 中一种不可变（immutable）的二进制序列，专门用于存储 8 位字节数据（范围为 0-255），常用于处理网络传输、文件读写及图像等非文本数据。"""
     if isinstance(b_s, str):
         return b_s.encode("utf-8")
     else:
         return b_s
 
 
+def test_to_bytes():
+    x = to_bytes("我")
+    print(f"{x}")
+
+
 def parse_url_qs():
+    """parse_qs 的作用是将 URL 里的查询参数字符串（如 a=1&b=2）解析成一个 Python 字典，其中每个键对应一个包含所有值的列表"""
     from urllib.parse import parse_qs
 
     url_qs = "red=5&blue=0&green="
@@ -128,7 +140,7 @@ def parse_url_qs():
 
 
 def check_falsy_scenarios():
-    # 定义所有在 Python 中为 False 的典型对象
+    """f"字符串 {变量或表达式:格式控制}"""
     falsy_values = [
         None,  # 无类型
         False,  # 布尔假
@@ -142,13 +154,38 @@ def check_falsy_scenarios():
         range(0),  # 空范围
     ]
     for val in falsy_values:
-        # 核心逻辑：if val 为 False，则进入 else
-        if val:
-            result = "True (真)"
-        else:
-            result = "False (假)"
+        result = "True (真)" if val else "False (假)"
         print(f"{str(type(val)):<20} | {str(val):<10} | {result}")
 
 
+def iterate_with_index():
+    """enumerate是一个内置函数，用于在循环时同时获得元素的索引和值"""
+    arr = ["A", "B", "C", "D"]
+    for i, c in enumerate(arr, start=0):
+        print(f"index={i}, content={c}")
+
+
+def iterate_with_zip():
+    """zip() 用于将多个可迭代对象（如列表、元组等）中对应位置的元素打包成一个个元组，并返回一个可迭代的 zip 对象"""
+    irr = [i for i in range(1, 5)]
+    jrr = [j for j in range(6, 10)]
+    for i, j in zip(irr, jrr):
+        print(f"{i}-{j}")
+
+
+def assignment_express():
+    """海象操作符 (:=) 是 Python 3.8 引入的语法，官方称为“赋值表达式”，作用：在计算表达式的同时，将结果赋值给一个变量"""
+    data = "ABCDEF"
+    # 减少重复计算
+    if (s := len(data)) > 4:
+        print(f"data的长度{s}")
+
+    cf = Path(__file__).resolve()
+    # 读取赋值判断合并到一行
+    with open(cf, "r", encoding="utf-8") as f:
+        while l := f.readline():
+            print(l)
+
+
 if __name__ == "__main__":
-    check_falsy_scenarios()
+    test_to_bytes()
