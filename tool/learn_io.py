@@ -63,5 +63,16 @@ def read_text_line_while():
             print(line.strip())
 
 
+def path_get():
+    path = Path("tool")
+    if path.exists():
+        if path.is_file():
+            print("是一个文件")
+        elif path.is_dir():
+            print("是一个目录")
+    else:
+        print("路径不存在")
+
+
 if __name__ == "__main__":
-    read_text_line_with_index()
+    path_get()
