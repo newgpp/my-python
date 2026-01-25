@@ -3,6 +3,27 @@ from typing import Any
 from pathlib import Path
 import sys
 
+def get_import_style():
+    im_rule = """
+    from 模块名 import 成员名(函数、类、变量) [as alias]
+    from 包名.模块名 import 成员名(函数、类、变量) [as alias]
+    import 模块名 [as alias]
+    import 包名.模块名 as alias
+    from 包名 import 模块名
+    """
+
+    im_tree = """
+    my_project/          # 项目根目录
+    │
+    ├── main.py          # 运行主程序
+    └── tools/           # 这是一个“包” (文件夹)
+        ├── __init__.py  # 必须有这个文件（即使是空的），文件夹才会被识别为包
+        ├── network.py   # 这是一个模块
+        └── database.py  # 这是一个模块
+    """
+
+    print(im_rule, im_tree)
+
 
 def get_version():
     print(f"python version = {sys.version}")
@@ -88,7 +109,7 @@ class UserAccount:
         return {"username": self.username, "age": self.age, "is_active": self.is_active}
 
 
-def test_user_funciton() -> None:
+def test_user_function() -> None:
     """实例方法 (Instance Method) 无需装饰器且首参数为 self（指向实例）"""
     """类方法 (Class Method) 需 @classmethod 装饰且首参数为 cls（指向类）"""
     """静态方法 (Static Method) 需 @staticmethod 装饰且不接收特定的首参数。"""
